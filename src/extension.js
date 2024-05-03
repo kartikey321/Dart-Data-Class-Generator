@@ -1211,7 +1211,7 @@ class DataClassGenerator {
 
       switch (prop.type) {
         case "DateTime":
-          return `${name}${nullSafe}.millisecondsSinceEpoch${endFlag}`;
+          return `${name}${nullSafe}.toString()${endFlag}`;
         case "Color":
           return `${name}${nullSafe}.value${endFlag}`;
         case "IconData":
@@ -1275,6 +1275,7 @@ class DataClassGenerator {
      */
     function customTypeMapping(prop, value = null) {
       const materialConvertValue = prop.isCollection ? "" : " as int";
+      const dateTimeConvertValue = prop.isCollection ? "" : " as String";
       prop = prop.isCollection ? prop.listType : prop;
       const isAddDefault =
         withDefaultValues &&
@@ -1291,7 +1292,7 @@ class DataClassGenerator {
           value = withDefaultValues
             ? `${leftOfValue}${value}??0${rightOfValue}`
             : value;
-          return `DateTime.fromMillisecondsSinceEpoch(${value}${materialConvertValue})`;
+          return `DateTime.parse(${value}${dateTimeConvertValue})`;
         case "Color":
           value = withDefaultValues
             ? `${leftOfValue}${value}??0${rightOfValue}`
